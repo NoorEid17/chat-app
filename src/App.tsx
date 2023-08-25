@@ -19,7 +19,7 @@ function App() {
         <AuthProvider>
           <RouterProvider router={router} />
         </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </>
   );

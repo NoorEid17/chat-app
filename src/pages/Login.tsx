@@ -39,7 +39,7 @@ const Login = () => {
     },
     onSuccess(response) {
       dispatch({ type: "LOGIN", payload: jwtDecode(response.data.token) });
-      return navigate("/chats");
+      return navigate("/");
     },
   });
 

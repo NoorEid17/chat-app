@@ -4,6 +4,7 @@ import {
   createContext,
   useEffect,
   useReducer,
+  useState,
   type Dispatch,
   type ReactNode,
 } from "react";
@@ -47,26 +48,27 @@ export const AuthContext = createContext<AuthContext>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const {
-    error,
-    data: response,
-    isLoading,
-  } = useQuery({
+  const [isLoading, setIsLoading] = useState(true);
+  const { error, data: response } = useQuery({
     queryKey: ["users", "token"],
     queryFn: async () => await refreshToken(),
+    refetchInterval: 15 * 60 * 1000,
+    retry: 0,
   });
 
   useEffect(() => {
-    if (!response) {
+    if (response) {
+      const token = response?.data.token;
+      axios.defaults.headers["Authorization"] = `bearer ${token}`;
+      setIsLoading(false);
+      dispatch({ type: "LOGIN", payload: jwtDecode(token) });
       return;
     }
-    const token = response?.data.token;
-    axios.defaults.headers["Authorization"] = `bearer ${token}`;
-    if (response?.statusText !== "OK") {
+    if (error) {
       dispatch({ type: "LOGOUT" });
+      setTimeout(() => setIsLoading(false), 2000);
       return;
     }
-    dispatch({ type: "LOGIN", payload: jwtDecode(token) });
   }, [response, error]);
 
   return (
