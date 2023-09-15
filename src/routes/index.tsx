@@ -1,4 +1,8 @@
+import ChatsList from "@/components/ChatsList";
+import ChatViewer from "@/components/ChatViewer";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Home from "@/pages/Home";
+import Invitations from "@/pages/Invitations";
 import Logout from "@/pages/Logout";
 import Settings from "@/pages/Settings";
 import Signup from "@/pages/Signup";
@@ -16,11 +20,29 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    Component: Home,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
     children: [
+      {
+        path: "/chats",
+        Component: ChatsList,
+        children: [
+          {
+            path: "/chats/:roomId",
+            Component: ChatViewer,
+          },
+        ],
+      },
       {
         path: "/settings",
         Component: Settings,
+      },
+      {
+        path: "/invitations",
+        Component: Invitations,
       },
     ],
   },
