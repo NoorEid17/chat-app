@@ -54,7 +54,7 @@ const Settings = () => {
   const [avatarSrc, setAvatarSrc] = useState(user.avatar);
 
   return (
-    <div className="mx-auto mt-12 max-w-lg min-w-max">
+    <div className="ml-20 mt-12 max-w-lg min-w-max">
       <h3 className="text-3xl font-bold">Edit your profile:</h3>
       <form
         className="flex flex-col gap-3 mt-10 mb-10"

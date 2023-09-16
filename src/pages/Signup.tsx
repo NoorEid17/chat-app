@@ -1,11 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/user";
-import { AxiosError } from "axios";
+import { signup } from "@/api/user";
+import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import jwtDecode from "jwt-decode";
+import { useContext } from "react";
+import { SocketContext } from "@/components/SocketProvider";
+import { AuthContext } from "@/components/AuthProvider";
 
 const schema = yup
   .object({
@@ -24,14 +28,24 @@ const Signup = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const { socket } = useContext(SocketContext);
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const loginMutation = useMutation({
-    mutationKey: ["login"],
-    mutationFn: login,
+    mutationKey: ["signup"],
+    mutationFn: signup,
     onError(error: AxiosError) {
       if (error.response?.status === 400) {
-        toast.error("Username or Password is incorrect!");
+        toast.error("Username is used!");
       }
+    },
+    onSuccess(response) {
+      const token = response.data.token;
+      axios.defaults.headers["Authorization"] = `bearer ${token}`;
+      dispatch({ type: "LOGIN", payload: jwtDecode(token) });
+      socket.connect();
+      return navigate("/");
     },
   });
 

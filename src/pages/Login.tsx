@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/user";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "@/components/AuthProvider";
@@ -38,7 +38,9 @@ const Login = () => {
       }
     },
     onSuccess(response) {
-      dispatch({ type: "LOGIN", payload: jwtDecode(response.data.token) });
+      const token = response.data.token;
+      axios.defaults.headers["Authorization"] = `bearer ${token}`;
+      dispatch({ type: "LOGIN", payload: jwtDecode(token) });
       return navigate("/");
     },
   });

@@ -1,5 +1,6 @@
 import { logout } from "@/api/user";
 import { AuthContext } from "@/components/AuthProvider";
+import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +10,7 @@ const Logout = () => {
   useEffect(() => {
     async function logoutAction() {
       logout().then(() => {
+        axios.defaults.headers.Authorization = null;
         dispatch({ type: "LOGOUT" });
         navigate("/login");
       });

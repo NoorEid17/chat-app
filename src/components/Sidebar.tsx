@@ -1,4 +1,6 @@
-import { Bell, LogOut, MessagesSquare, Settings } from "lucide-react";
+import { fetchInvitations } from "@/api/invitation";
+import { useQuery } from "@tanstack/react-query";
+import { LogOut, MessagesSquare, Settings, Users } from "lucide-react";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
@@ -7,11 +9,19 @@ const Sidebar = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+  const { data: invitations } = useQuery({
+    queryKey: ["invitations"],
+    queryFn: fetchInvitations,
+  });
 
   return (
-    <nav className="flex flex-col gap-8 fixed top-0 left-0 h-screen bg-base-200 px-2 items-center">
+    <nav
+      className={`flex flex-col gap-8 fixed sm:top-0 left-0 h-screen bg-base-200 px-2 items-center w-24`}
+    >
       <div className="mt-4 mb-8">
-        <span className="text-2xl font-bold">CA</span>
+        <span className="text-2xl font-bold cursor-pointer text-white brightness-150">
+          CA
+        </span>
       </div>
       <NavLink
         to={`/user/${user.username}`}
@@ -29,7 +39,7 @@ const Sidebar = () => {
         </div>
       </NavLink>
       <NavLink
-        to="/"
+        to="/chats"
         className={({ isActive }: { isActive: boolean }) =>
           `flex flex-col items-center ${isActive && "text-white"}`
         }
@@ -38,13 +48,20 @@ const Sidebar = () => {
         <span className="text-sm">All chats</span>
       </NavLink>
       <NavLink
-        to="/notifications"
+        to="/invitations"
         className={({ isActive }: { isActive: boolean }) =>
           `flex flex-col items-center ${isActive && "text-white"}`
         }
       >
-        <Bell />
-        <span className="text-sm">Notifications</span>
+        <div className="indicator">
+          {invitations && invitations.length > 0 && (
+            <span className="indicator-item badge badge-primary">
+              {invitations.length}
+            </span>
+          )}
+          <Users />
+        </div>
+        <span className="text-sm">Invitations</span>
       </NavLink>
       <NavLink
         to="/settings"
