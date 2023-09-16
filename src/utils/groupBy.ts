@@ -1,6 +1,7 @@
-import { Message } from "@/api/message";
-
-export function groupBy(list, keyGetter) {
+export function groupBy<KeyType, ObjectsType>(
+  list: any[],
+  keyGetter: any
+): Map<KeyType, ObjectsType[]> {
   const map = new Map();
   list.forEach((item) => {
     const key = keyGetter(item);
