@@ -262,6 +262,7 @@ const GroupRoomCard = ({ room }: { room: Room }) => {
                 </span>
               )}
               <p className="w-56 h-5 overflow-hidden text-ellipsis whitespace-nowrap">
+                {room.lastMessage?.sender.firstName + ": "}
                 {room.lastMessage?.text}
               </p>
             </div>
