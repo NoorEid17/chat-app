@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/user";
 import axios, { AxiosError } from "axios";
-import toast from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "@/components/AuthProvider";
 import jwtDecode from "jwt-decode";
@@ -23,6 +22,7 @@ const Login = () => {
   const {
     register,
     formState: { errors },
+    setError,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
@@ -33,8 +33,8 @@ const Login = () => {
     mutationKey: ["login"],
     mutationFn: login,
     onError(error: AxiosError) {
-      if (error.response?.status === 400) {
-        toast.error("Username or Password is incorrect!");
+      if (error.response?.status == 400) {
+        setError("password", { message: "Username or Password is incorrect!" });
       }
     },
     onSuccess(response) {
