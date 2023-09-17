@@ -1,5 +1,5 @@
 # A Chatting web app
-this is the frontend for a chatting web app
+This is the frontend for a chatting web app
 
 ## Libraries and techs
 - React
