@@ -260,7 +260,7 @@ const MesssageImage = ({ image }: { image: string }) => {
     <>
       <img
         src={image}
-        className="max-w-md max-h-60 h-auto w-auto cursor-pointer"
+        className="max-w-md max-h-60 h-auto w-auto cursor-pointer rounded-md"
         onClick={() => imageDialogRef.current?.showModal()}
       />
       <dialog className="modal" ref={imageDialogRef}>
