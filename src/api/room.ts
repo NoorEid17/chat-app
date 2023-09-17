@@ -24,13 +24,13 @@ export const fetchRoomInfo = async (roomId: string) => {
   return Promise.resolve(res.data.room);
 };
 
-export const createGroup = async (inputs: { name: string }) => {
+export const createGroup = async (inputs: { name: string }): Promise<Room> => {
   const { data } = await axios.post(
     "/rooms",
     { ...inputs, isGroup: true },
     { withCredentials: true }
   );
-  return data;
+  return data.room;
 };
 
 export const updateGroupAvatar = async ({

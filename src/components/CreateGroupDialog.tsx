@@ -4,6 +4,7 @@ import { PlusIcon } from "lucide-react";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateGroupDialog = () => {
   type FormValues = {
@@ -13,10 +14,12 @@ const CreateGroupDialog = () => {
   const createGroupDialogRef = useRef<HTMLDialogElement>(null);
   const { register, handleSubmit } = useForm<FormValues>();
   const dialogCloseForm = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
   const { mutate } = useMutation({
     mutationFn: createGroup,
-    onSuccess: () => {
+    onSuccess: (room) => {
       toast.success("Room created!");
+      navigate("/chats/" + room.id);
       dialogCloseForm.current?.submit();
     },
     onError: () => {
