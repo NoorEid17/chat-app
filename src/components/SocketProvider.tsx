@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketInstance = io("http://localhost:5000", {
+    const socketInstance = io(import.meta.env.VITE_SOCKET_URL || "localhost", {
       auth: { token: axios.defaults.headers["Authorization"] },
     });
     setSocket(socketInstance);

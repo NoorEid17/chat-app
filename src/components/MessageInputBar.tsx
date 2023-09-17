@@ -22,7 +22,6 @@ const MessageInputBar = ({
     state: { user },
   } = useContext(AuthContext);
   const { register, handleSubmit, reset, setValue, getValues } = useForm();
-  const messageTextRef = useRef<HTMLTextAreaElement | null>(null);
   const submitHandler = async (data: any) => {
     const messageId = uuidv4();
 
@@ -39,7 +38,7 @@ const MessageInputBar = ({
       id: messageId,
       isNew: true,
       delivered: false,
-      seenAt: [],
+      seenBy: [],
     });
 
     messagesWrapperRef.current?.scrollTo({ top: 0 });
@@ -53,7 +52,7 @@ const MessageInputBar = ({
 
   return (
     <form
-      className="flex items-center w-full px-12 gap-4"
+      className="flex items-center w-full px-12 gap-4 max-sm:px-0"
       onSubmit={handleSubmit(submitHandler)}
     >
       <EmojiPickerDropdown addEmojiToMessageText={addEmojiToMessageText} />
@@ -113,7 +112,7 @@ const UploadImage = ({
       isNew: true,
       delivered: false,
       sender: user,
-      seenAt: [],
+      seenBy: [],
       roomId,
       text: caption,
       media: uploadingImage,

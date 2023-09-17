@@ -46,7 +46,7 @@ const Login = () => {
   });
 
   return (
-    <div className="max-sm:w-10/12 bg-neutral-focus w-1/4 mx-auto mt-32 max-sm:mt-12 text-center shadow-lg p-8 rounded-xl">
+    <div className="max-sm:w-10/12 bg-neutral-focus w-1/4 max-md:w-1/2 mx-auto mt-32 max-sm:mt-12 text-center shadow-lg p-8 rounded-xl">
       <h3 className="text-4xl mb-3">Login</h3>
       <form onSubmit={handleSubmit((data: any) => loginMutation.mutate(data))}>
         <div className="form-control w-full">

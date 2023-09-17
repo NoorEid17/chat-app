@@ -32,3 +32,17 @@ export const createGroup = async (inputs: { name: string }) => {
   );
   return data;
 };
+
+export const updateGroupAvatar = async ({
+  roomId,
+  avatar,
+}: {
+  roomId: string;
+  avatar: File;
+}) => {
+  const formData = new FormData();
+  formData.append("avatar", avatar);
+  return axios.put("/rooms/" + roomId + "/update-avatar", formData, {
+    withCredentials: true,
+  });
+};

@@ -20,7 +20,7 @@ const InviteMembersToGroupDialog = ({ room }: { room: Room }) => {
     <>
       <button
         onClick={() => inviteMembersDialogRef.current?.showModal()}
-        className="btn btn-ghost tooltip"
+        className="btn btn-ghost tooltip tooltip-bottom"
         data-tip="invite members"
       >
         <UserPlus />

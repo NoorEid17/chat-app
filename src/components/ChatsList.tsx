@@ -14,7 +14,7 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 import CreateGroupDialog from "./CreateGroupDialog";
 import InvitationToast from "./InvitationToast";
@@ -30,6 +30,7 @@ const ChatsList = () => {
   });
   const socket = useSocket();
   const queryClient = useQueryClient();
+  const location = useLocation();
 
   socket.on("message", (message: Message) => {
     const { roomId } = message;
@@ -67,7 +68,11 @@ const ChatsList = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full py-4 px-4 gap-5 col-span-2">
+      <div
+        className={`flex flex-col h-full py-4 px-4 gap-5 col-span-2 max-md:col-span-7 ${
+          location.pathname !== "/chats" && "max-md:hidden"
+        }`}
+      >
         <SearchInput
           setIsSearching={setIsSearching}
           searchRequest={searchMutation.mutate}
@@ -178,10 +183,12 @@ const RoomCard = ({ room }: { room: Room }) => {
               <div className="flex gap-2">
                 {lastMessage?.userId === user.id && (
                   <CheckCheck
-                    color={lastMessage?.seenAt.length ? "#00caff" : "gray"}
+                    color={lastMessage?.seenBy.length ? "#00caff" : "gray"}
                   />
                 )}
-                <span>{moment(lastMessage?.createdAt).fromNow(true)}</span>
+                <span>
+                  {lastMessage && moment(lastMessage?.createdAt).fromNow(true)}
+                </span>
               </div>
             </div>
             <div className="flex justify-between">
@@ -226,7 +233,10 @@ const GroupRoomCard = ({ room }: { room: Room }) => {
       <>
         <div className="avatar placeholder">
           <div className="w-12 h-12 rounded-full bg-gray-500">
-            <span className="text-xl">{room.name[0]}</span>
+            <span className="text-xl">
+              {room.avatar && <img src={room.avatar} />}
+              {!room.avatar && <span className="text-xl">{room.name[0]}</span>}
+            </span>
           </div>
         </div>
         <div className="w-full">
@@ -235,10 +245,13 @@ const GroupRoomCard = ({ room }: { room: Room }) => {
             <div className="flex gap-2">
               {room.lastMessage?.userId === user.id && (
                 <CheckCheck
-                  color={room.lastMessage?.seenAt.length ? "#00caff" : "gray"}
+                  color={room.lastMessage?.seenBy.length ? "#00caff" : "gray"}
                 />
               )}
-              <span>{moment(room.lastMessage?.createdAt).fromNow(true)}</span>
+              <span>
+                {room.lastMessage &&
+                  moment(room.lastMessage?.createdAt).fromNow(true)}
+              </span>
             </div>
           </div>
           <div className="flex justify-between">

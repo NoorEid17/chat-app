@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 import InviteMembersToGroupDialog from "./InviteMembersToGrouoDialog";
 import MessagesWrapper from "./MessagesWrapper";
+import UpdateGroupAvatarDialog from "./UpdateGroupAvatarDialog";
 
 const ChatViewer = () => {
   const {
@@ -25,7 +26,7 @@ const ChatViewer = () => {
 
   return (
     <div
-      className="h-full grid w-full col-span-5 px-5"
+      className="h-full grid w-full col-span-5 px-5 max-md:col-span-7"
       style={{ gridTemplateRows: "15% 1fr 10%" }}
     >
       {isLoading ? (
@@ -73,6 +74,9 @@ const PrivateRoomHeader = ({ receiver }: { receiver?: User }) => (
 );
 
 const GroupRoomHeader = ({ room }: { room: Room }) => {
+  const {
+    state: { user },
+  } = useContext(AuthContext);
   return (
     <header className="p-4">
       <div className="flex justify-between">
@@ -89,7 +93,12 @@ const GroupRoomHeader = ({ room }: { room: Room }) => {
           </div>
         </div>
         <div>
-          <InviteMembersToGroupDialog room={room} />
+          {room.admins.includes(user.id) && (
+            <>
+              <UpdateGroupAvatarDialog roomId={room.id} />
+              <InviteMembersToGroupDialog room={room} />
+            </>
+          )}
         </div>
       </div>
       <hr className="border-t-2 border-solid border-slate-700/40 my-4"></hr>

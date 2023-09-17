@@ -137,14 +137,18 @@ const MessageCard = ({ message }: { message: Message }) => {
 const MessageFromSelf = ({ message }: { message: Message }) => {
   const messageDate = moment(message.createdAt);
   const [delivered, setDelivered] = useState(false);
+  const [seenBy, setSeenBy] = useState(message.seenBy);
   const socket = useSocket();
 
   if (message.isNew) {
     socket.once(`delivered:${message.id}`, () => {
-      console.log("delivered");
       setDelivered(true);
     });
   }
+
+  socket.once("seen:" + message.id, (messageSeenBy: any[]) =>
+    setSeenBy(messageSeenBy)
+  );
 
   return (
     <div className="chat chat-end flex flex-row-reverse gap-8">
@@ -171,10 +175,7 @@ const MessageFromSelf = ({ message }: { message: Message }) => {
           {message.isNew && !delivered ? (
             <Clock4 size={16} />
           ) : (
-            <CheckCheck
-              color={message.seenAt.length ? "#00caff" : "#ddd"}
-              size={16}
-            />
+            <CheckCheck color={seenBy.length ? "#00caff" : "#ddd"} size={16} />
           )}
         </div>
       </div>
@@ -191,7 +192,7 @@ const MessageFromOther = ({ message }: { message: Message }) => {
     state: { user },
   } = useContext(AuthContext);
   useEffect(() => {
-    if (!message.seenAt.includes(user.id) && inView) {
+    if (!message.seenBy.includes(user.id) && inView) {
       socket?.emit("seen", { messageId: message.id });
       dispatch({
         type: "DECREMENT_UNREAD_COUNT",

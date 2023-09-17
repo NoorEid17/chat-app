@@ -10,7 +10,7 @@ export interface Message {
   roomId: Room | string;
   userId: string | User;
   createdAt: Date;
-  seenAt: Date[];
+  seenBy: Date[];
   sender: User;
   pending?: boolean;
   isNew?: boolean;
