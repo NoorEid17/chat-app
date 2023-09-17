@@ -11,3 +11,9 @@ This is the frontend for a chatting web app
 - DaisyUI
 - Lucide for icons
 - React-hot-toast for toaster and alerts
+
+## Running the project
+to get started 
+1. create a .env.local file like .env.local.example
+2. run command ```npm install```
+3. run command ```npm run dev```
