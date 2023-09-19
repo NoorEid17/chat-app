@@ -7,6 +7,12 @@ This is the frontend for a chatting web app
 ## Screenshots and preview:
 ![screenshot1](https://github.com/NoorEid17/chat-app/assets/52053507/5064bc5c-a421-4076-b53b-f81842b3a858)
 
+
+
+https://github.com/NoorEid17/chat-app/assets/52053507/05fb4479-c719-401f-8646-dcff35e1cb79
+
+
+
 ---
 
 ## Libraries and techs
