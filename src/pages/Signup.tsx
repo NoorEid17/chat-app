@@ -8,7 +8,6 @@ import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import jwtDecode from "jwt-decode";
 import { useContext } from "react";
-import { SocketContext } from "@/components/SocketProvider";
 import { AuthContext } from "@/components/AuthProvider";
 
 const schema = yup
@@ -28,7 +27,6 @@ const Signup = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const { socket } = useContext(SocketContext);
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -44,7 +42,6 @@ const Signup = () => {
       const token = response.data.token;
       axios.defaults.headers["Authorization"] = `bearer ${token}`;
       dispatch({ type: "LOGIN", payload: jwtDecode(token) });
-      socket.connect();
       return navigate("/");
     },
   });
